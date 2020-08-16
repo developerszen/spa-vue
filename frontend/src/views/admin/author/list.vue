@@ -1,7 +1,5 @@
 <template lang="pug">
-    v-main.primary
-        v-container(fill-height)
-            router-view
+    h1 Lista de autores
 </template>
 
 <script lang="ts">
