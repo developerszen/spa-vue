@@ -2,7 +2,7 @@
     v-row(justify="center")
         v-col.py-0(cols="12")
             //- Title
-            h3.secondary--text {{ $t('admin.author.update') }}
+            h3.secondary--text {{ $t('admin.category.update') }}
 
         //- Loader
         app-loader(v-if="loading")
@@ -25,15 +25,15 @@
                                 //- Name
                                 v-col.py-0(cols="12")
                                     validation-provider(
-                                        :name="$t('admin.author.fields.name')"
-                                        :rules="'required|max:80'"
+                                        :name="$t('admin.category.fields.name')"
+                                        :rules="'required|max:40'"
                                         v-slot="{ errors }"
                                     )
                                         v-text-field(
                                             v-model="payload.name"
-                                            counter="80"
-                                            prepend-icon="fas fa-pen-nib"
-                                            :label="`${$t('admin.author.fields.name')}*`"
+                                            counter="40"
+                                            prepend-icon="fas fa-sitemap"
+                                            :label="`${$t('admin.category.fields.name')}*`"
                                             :error-messages="errors"
                                             dense outlined dark
                                         )
@@ -70,17 +70,16 @@
             save() {
                 this.loading = true,
 
-                axios.put(`/api/authors/${this.id}`, this.payload).then(() => {
+                axios.put(`/api/categories/${this.id}`, this.payload).then(() => {
                     this.loading = false;
 
                     this.$notify({
                         type: 'success',
                         title: this.$t('general.notifications.success.title'),
-                        text: this.$t('general.notifications.success.server')
+                        texto: this.$t('general.notifications.success.server')
                     });
 
-                    this.$router.push({ name: "admin.author.list" });
-
+                    this.$router.push({ name: "admin.category.list" });
                 }).catch((error) => {
                     this.loading = false;
 
@@ -89,14 +88,14 @@
                     this.$notify({
                         type: 'error',
                         title: this.$t('general.notifications.error.title'),
-                        text: this.$t('general.notifications.error.server')
+                        texto: this.$t('general.notifications.error.server')
                     });
                 });
             },
             fetchData() {
                 this.loading = true;
 
-                axios.get(`/api/authors/${this.id}/edit`).then((response) => {
+                axios.get(`/api/categories/${this.id}/edit`).then((response) => {
                     this.loading = false;
                     this.payload = response.data;
                 });

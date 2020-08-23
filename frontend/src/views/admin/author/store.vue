@@ -14,6 +14,9 @@
 
                     //- Form
                     v-card-text
+                        //- Errors
+                        show-errors(v-if="errors" :errors="errors")
+
                         validation-observer(v-slot="{ invalid }")
                             v-row
                                 //- Name
@@ -44,17 +47,44 @@
 </template>
 
 <script lang="ts">
+    import axios from "axios";
+
     export default {
         data() {
             return {
                 loading: false,
                 payload: {
-                    name: ""
-                }
+                    name: "",
+                },
+                errors: null,
             }
         },
         methods: {
-            save() {}
+            save() {
+                this.loading = true,
+
+                axios.post("/api/authors", this.payload).then(() => {
+                    this.loading = false;
+
+                    this.$notify({
+                        type: 'success',
+                        title: this.$t('general.notifications.success.title'),
+                        text: this.$t('general.notifications.success.server')
+                    });
+
+                    this.$router.push({ name: "admin.author.list" });
+                }).catch((error) => {
+                    this.loading = false;
+
+                    this.errors = error.response.data.errors;
+
+                    this.$notify({
+                        type: 'error',
+                        title: this.$t('general.notifications.error.title'),
+                        text: this.$t('general.notifications.error.server')
+                    });
+                });
+            }
         }
     }
 </script>

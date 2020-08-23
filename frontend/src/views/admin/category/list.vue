@@ -2,11 +2,11 @@
     v-row(justify="center")
         v-col.py-0(cols="12")
             //- Title
-            h3.secondary--text {{ $t('admin.author.list') }}
+            h3.secondary--text {{ $t('admin.category.list') }}
 
             //- Store
             v-btn(
-                :to="{ name: 'admin.author.store' }"
+                :to="{ name: 'admin.category.store' }"
                 color="primary"
                 fab x-small left depressed
             ): v-icon(x-small) fas fa-plus
@@ -20,19 +20,19 @@
                 template(#item.actions="{ item }")
                     //- Show
                     v-btn.mr-2(
-                        :to="{ name: 'admin.author.show', params: { id: item.id } }"
+                        :to="{ name: 'admin.category.show', params: { id: item.id } }"
                         color="primary"
                         fab x-small depressed
                     ): v-icon(x-small) fas fa-eye
                     //- Update
                     v-btn.mr-2(
-                        :to="{ name: 'admin.author.update', params: { id: item.id } }"
+                        :to="{ name: 'admin.category.update', params: { id: item.id } }"
                         color="secondary"
                         fab x-small depressed
                     ): v-icon(x-small) fas fa-edit
                     //- Delete
                     v-btn.mr-2(
-                        :disabled="Boolean(item.books_count)"
+                        :disabled="Boolean(item.book_count)"
                         @click="openDialog(item)"
                         color="error"
                         fab x-small depressed
@@ -79,11 +79,11 @@
                 items: [],
                 headers: [
                     {
-                        text: this.$t("admin.author.fields.name"),
+                        text: this.$t("admin.category.fields.name"),
                         value: "name",
                     },
                     {
-                        text: this.$t("admin.author.fields.created_at"),
+                        text: this.$t("admin.category.fields.created_at"),
                         value: "created_at",
                     },
                     {
@@ -97,7 +97,7 @@
             fetchData() {
                 this.loading.data = true;
 
-                axios.get("/api/authors").then((response) => {
+                axios.get("/api/categories").then((response) => {
                     this.loading.data = false;
                     this.items = response.data;
                 });
@@ -109,7 +109,7 @@
             deleteItem() {
                 this.loading.delete = true;
 
-                axios.delete(`/api/authors/${this.item.id}`).then(() => {
+                axios.delete(`/api/categories/${this.item.id}`).then(() => {
                     this.loading.delete = false;
                     this.dialog = false;
                     this.fetchData();

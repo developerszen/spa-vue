@@ -76,11 +76,10 @@
                     this.$notify({
                         type: 'success',
                         title: this.$t('general.notifications.success.title'),
-                        text: this.$t('general.notifications.success.server')
+                        texto: this.$t('general.notifications.success.server')
                     });
 
                     this.$router.push({ name: "admin.author.list" });
-
                 }).catch((error) => {
                     this.loading = false;
 
@@ -89,7 +88,7 @@
                     this.$notify({
                         type: 'error',
                         title: this.$t('general.notifications.error.title'),
-                        text: this.$t('general.notifications.error.server')
+                        texto: this.$t('general.notifications.error.server')
                     });
                 });
             },

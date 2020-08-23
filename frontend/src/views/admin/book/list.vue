@@ -2,11 +2,11 @@
     v-row(justify="center")
         v-col.py-0(cols="12")
             //- Title
-            h3.secondary--text {{ $t('admin.author.list') }}
+            h3.secondary--text {{ $t('admin.book.list') }}
 
             //- Store
             v-btn(
-                :to="{ name: 'admin.author.store' }"
+                :to="{ name: 'admin.book.store' }"
                 color="primary"
                 fab x-small left depressed
             ): v-icon(x-small) fas fa-plus
@@ -15,24 +15,31 @@
 
             //- Data table
             v-data-table(v-else :headers="headers" :items="items" :items-per-page="5")
-                template(#item.name="{ item }"): span.font-weight-bold {{ item.name }}
+                template(#item.image="{ item }")
+                    v-avatar
+                        img(
+                            :src="item.image ? `/${item.image}` : '/images/books/default.jpg'"
+                            :title="item.title"
+                            :alt="item.title"
+                        )
+
+                template(#item.title="{ item }"): span.font-weight-bold {{ item.title }}
                 template(#item.created_at="{ item }") {{ item.created_at | moment('LLL') }}
                 template(#item.actions="{ item }")
                     //- Show
                     v-btn.mr-2(
-                        :to="{ name: 'admin.author.show', params: { id: item.id } }"
+                        :to="{ name: 'admin.book.show', params: { id: item.id } }"
                         color="primary"
                         fab x-small depressed
                     ): v-icon(x-small) fas fa-eye
                     //- Update
                     v-btn.mr-2(
-                        :to="{ name: 'admin.author.update', params: { id: item.id } }"
+                        :to="{ name: 'admin.book.update', params: { id: item.id } }"
                         color="secondary"
                         fab x-small depressed
                     ): v-icon(x-small) fas fa-edit
                     //- Delete
                     v-btn.mr-2(
-                        :disabled="Boolean(item.books_count)"
                         @click="openDialog(item)"
                         color="error"
                         fab x-small depressed
@@ -50,7 +57,7 @@
 
                         v-col.text-center.py-0.white--text(cols="12")
                             div.text-h6.font-weight-bold {{ $t('general.delete') }}
-                            p {{ item.name }}
+                            p {{ item.title }}
 
                             v-btn(
                                 :loading="loading.delete"
@@ -79,11 +86,19 @@
                 items: [],
                 headers: [
                     {
-                        text: this.$t("admin.author.fields.name"),
-                        value: "name",
+                        text: this.$t("admin.book.fields.image"),
+                        value: "image",
                     },
                     {
-                        text: this.$t("admin.author.fields.created_at"),
+                        text: this.$t("admin.book.fields.title"),
+                        value: "title",
+                    },
+                    {
+                        text: this.$t("admin.book.fields.category"),
+                        value: "category.name",
+                    },
+                    {
+                        text: this.$t("admin.book.fields.created_at"),
                         value: "created_at",
                     },
                     {
@@ -97,7 +112,7 @@
             fetchData() {
                 this.loading.data = true;
 
-                axios.get("/api/authors").then((response) => {
+                axios.get("/api/books").then((response) => {
                     this.loading.data = false;
                     this.items = response.data;
                 });
@@ -109,7 +124,7 @@
             deleteItem() {
                 this.loading.delete = true;
 
-                axios.delete(`/api/authors/${this.item.id}`).then(() => {
+                axios.delete(`/api/books/${this.item.id}`).then(() => {
                     this.loading.delete = false;
                     this.dialog = false;
                     this.fetchData();
