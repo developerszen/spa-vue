@@ -37,3 +37,13 @@ extend("alpha_spaces", {
     message: (field, values: any): any =>
         i18n.t("validations.alpha_spaces", values)
 });
+
+//- Custom validation
+
+extend("alpha_custom", {
+    validate(value) {
+        const regex: any = /^([A-Za-z .])+$/;
+        return regex.test(value);
+    },
+    message: (field, values): any => i18n.t('validations.alpha_custom', values),
+} as any);

@@ -14,6 +14,14 @@
 
                         v-col.pb-0(cols="12")
                             //- Lang
+                            v-select(
+                                v-model="$i18n.locale"
+                                @change="setLang"
+                                :items="langs"
+                                prepend-icon="fas fa-language"
+                                :label="$t('general.select_language')"
+                                dense outlined dark
+                            )
 
                     validation-observer(v-slot="{ invalid }")
                         v-row
@@ -84,7 +92,11 @@
                     email: "",
                     password: "",
                     remember: false,
-                }
+                },
+                langs: [
+                    { text: "Español", value: "es" },
+                    { text: "English", value: "en" },
+                ]
             }
         },
         methods: {
@@ -114,6 +126,9 @@
                         text: this.$t('auth.verify_credentials'),
                     })
                 });
+            },
+            setLang(lang) {
+                this.$moment.locale(lang);
             }
         }
     }

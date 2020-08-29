@@ -6,6 +6,7 @@ export const en = {
     ...app,
     $vuetify: es_vuetify,
     validations: {
-        ...validationMessages.messages
+        ...validationMessages.messages,
+        alpha_custom: 'The field {_field_} can only contain letters, spaces and dots.',
     }
 };
